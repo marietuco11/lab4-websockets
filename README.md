@@ -2,7 +2,7 @@
 
 # Web Engineering 2025-2026 / Lab 4: WebSocket
 
-A minimal Spring Boot + Kotlin starter for Lab 4. Complete the tasks in `docs/GUIDE.md` to implement WebSocket communication with the ELIZA chatbot.
+A minimal Spring Boot + Kotlin starter for Lab 4.
 
 ## Tech stack
 
@@ -23,22 +23,23 @@ A minimal Spring Boot + Kotlin starter for Lab 4. Complete the tasks in `docs/GU
 ./gradlew test
 ./gradlew bootRun
 # Default: http://localhost:8080
+# WebSocket endpoint: ws://localhost:8080/eliza
 ```
 
 ## Project structure
 
 - `src/main/kotlin/websockets`: application code (`Eliza.kt`, `ElizaServer.kt`)
 - `src/test/kotlin/websockets`: tests (`ElizaServerTest.kt`)
-- `docs/GUIDE.md`: assignment instructions
 
 ## Assignment tasks
 
-See `docs/GUIDE.md` for detailed steps:
+See `GUIDE.md` for detailed steps:
 
 - Complete the `onChat()` test in `ElizaServerTest.kt`
 - Remove `@Disabled` annotation to enable the test
-- Add required code (6 lines) and comments (6 explanations)
+- Add required code (~6 lines) and comments (6 explanations)
 - Verify WebSocket bidirectional communication with ELIZA
+- Handle asynchronous testing with proper assertions for concurrency
 
 ## Code quality and formatting
 
@@ -51,6 +52,8 @@ See `docs/GUIDE.md` for detailed steps:
 ```bash
 ./gradlew test
 ```
+
+**Note**: Tests may receive 4-5 messages depending on network characteristics and timing due to WebSocket's asynchronous nature.
 
 ## Bonus opportunities
 

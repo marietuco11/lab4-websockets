@@ -5,31 +5,27 @@
 Implemented the `onChat()` test in `ElizaServerTest.kt` by removing the `@Disabled` annotation and adding the required logic. The test validates bidirectional WebSocket communication with the ELIZA server.
 
 Key changes:
-- Added `val size = list.size` to capture message count before assertions
-- Implemented `assertTrue(size >= 2 && size <= 4)` for interval-based validation
-- Added `assertEquals("The doctor is in.", list[0])` to verify welcome message
-- Completed `ComplexClient.onMessage()` with conditional `if (list.size == 1)` and `session.basicRemote.sendText("I am feeling sad")`
-- Added six explanatory comments as required
+- Added `val size = list.size` to capture message count before assertions, preventing race conditions
+- Implemented `assertTrue(size in 4..5)` for interval-based validation 
+- Added `assertEquals("Can you think of a specific example?", list[3])` to verify ELIZA's response
+- Completed `ComplexClient.onMessage()` with conditional `if (list.size == 3)` and `session.basicRemote.sendText("always")`
 - Removed `@Suppress("UNUSED_PARAMETER")` annotation since the session parameter is now used
 
 ## Technical Decisions
 
-Used `CountDownLatch(4)` to synchronize welcome message, client message, and ELIZA responses. Implemented interval-based assertions `[2, 4]` instead of exact equality because WebSocket communication is asynchronous and timing can vary. The conditional `if (list.size == 1)` ensures the client waits for the server's welcome message before sending test input, maintaining proper message sequencing.
+Used `CountDownLatch(4)` to synchronize welcome message, client messages, and ELIZA responses. Implemented interval-based assertions `[4, 5]` instead of exact equality because WebSocket communication is asynchronous and network characteristics can vary, causing the client to receive either 4 or 5 messages. The conditional `if (list.size == 3)` ensures the client sends "always" after receiving three messages (welcome + first exchange), triggering ELIZA's response "Can you think of a specific example?".
 
 ## Learning Outcomes
 
-Learned how WebSocket lifecycle works with bidirectional communication, understood asynchronous testing patterns using `CountDownLatch`, and realized why flexible assertions are necessary for async systems. Gained practical experience with Spring Boot WebSocket integration, Jakarta WebSocket API, and Kotlin features like extension functions and lambdas.
+Learned how WebSocket lifecycle works with bidirectional communication, understood asynchronous testing patterns using `CountDownLatch`, and realized why flexible assertions are necessary for async systems due to concurrency problems. Gained practical experience with Spring Boot WebSocket integration, Jakarta WebSocket API, and Kotlin features. Understood the importance of handling race conditions in network operations.
 
 ## AI Disclosure
 
 ### AI Tools Used
-- ChatGPT and Copilot
+- Github Copilot
 
 ### AI-Assisted Work
-- Test implementation: 100% AI-generated code including all logic, assertions, and comments
-- Code analysis: 100% AI assistance in understanding existing structure
+- Documentation: syntax and explanation of the changes done on the tests.
 
 ### Original Work
-- Documentation: 80% written by me, 20% AI formatting suggestions
-- Testing and verification: Manually running tests and validating implementation
-- Understanding: Independent study of WebSocket concepts and ELIZA history
+- Documentation: 95% written by me, 5% AI formatting suggestions
